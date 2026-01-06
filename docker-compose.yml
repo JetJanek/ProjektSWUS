@@ -13,7 +13,7 @@ services:
         ipv4_address: 10.0.2.2
       net_pc1_r1:
         ipv4_address: 10.0.1.4
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r1:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
@@ -32,7 +32,7 @@ services:
         ipv4_address: 10.23.0.2
       net_r2_r5:
         ipv4_address: 10.25.0.3
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r2:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
@@ -51,7 +51,7 @@ services:
         ipv4_address: 10.34.0.4
       net_r3_r5:
         ipv4_address: 10.35.0.2
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r3:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
@@ -68,7 +68,7 @@ services:
         ipv4_address: 10.34.0.2
       net_pc3_r4:
         ipv4_address: 10.0.3.4
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r4:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
@@ -87,7 +87,7 @@ services:
         ipv4_address: 10.35.0.3
       net_r6_r5:
         ipv4_address: 10.56.0.4
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r5:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
@@ -104,7 +104,7 @@ services:
         ipv4_address: 10.56.0.2
       net_pc4_r6:
         ipv4_address: 10.0.4.4
-    command: ["tail -f /dev/null"]
+    command: tail -f /dev/null
     #volumes:
     #  - ./configs/r6:/etc/quagga
     #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
