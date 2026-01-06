@@ -1,0 +1,194 @@
+services:
+  r1:
+    build: ./quagga
+    container_name: r1
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r1_r2:
+        ipv4_address: 10.12.0.3
+      net_pc2_r1:
+        ipv4_address: 10.0.2.2
+      net_pc1_r1:
+        ipv4_address: 10.0.1.4
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r1:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+
+  r2:
+    build: ./quagga
+    container_name: r2
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r1_r2:
+        ipv4_address: 10.12.0.4
+      net_r2_r3:
+        ipv4_address: 10.23.0.2
+      net_r2_r5:
+        ipv4_address: 10.25.0.3
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r2:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
+
+  r3:
+    build: ./quagga
+    container_name: r3
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r2_r3:
+        ipv4_address: 10.23.0.3
+      net_r3_r4:
+        ipv4_address: 10.34.0.4
+      net_r5_r3:
+        ipv4_address: 10.35.0.2
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r3:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
+
+  r4:
+    build: ./quagga
+    container_name: r4
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r3_r4:
+        ipv4_address: 10.34.0.2
+      net_pc3_r4:
+        ipv4_address: 10.0.3.4
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r4:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
+
+  r5:
+    build: ./quagga
+    container_name: r5
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r2_r5:
+        ipv4_address: 10.25.0.2
+      net_r3_r5:
+        ipv4_address: 10.35.0.3
+      net_r5_r6:
+        ipv4_address: 10.56.0.4
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r5:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
+
+  r6:
+    build: ./quagga
+    container_name: r6
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      net_r5_r6:
+        ipv4_address: 10.56.0.2
+      net_pc4_r6:
+        ipv4_address: 10.0.4.4
+    command: ["tail -f /dev/null"]
+    #volumes:
+    #  - ./configs/r6:/etc/quagga
+    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]
+
+  pc1:
+    build: ./pc  # Zmień na swój obraz PC
+    container_name: pc1
+    networks:
+      net_pc1_r1:
+        ipv4_address: 10.0.1.100
+    command: tail -f /dev/null  # Idle, instaluj co chcesz via exec
+
+  pc2:
+    build: ./pc  # Zmień na swój obraz PC
+    container_name: pc2
+    networks:
+      net_pc2_r1:
+        ipv4_address: 10.0.2.100
+    command: tail -f /dev/null
+
+  pc3:
+    build: ./pc  # Zmień na swój obraz PC
+    container_name: pc3
+    networks:
+      net_pc3_r4:
+        ipv4_address: 10.0.3.100
+    command: tail -f /dev/null
+
+  pc4:
+    build: ./pc  # Zmień na swój obraz PC
+    container_name: pc4
+    networks:
+      net_pc4_r6:
+        ipv4_address: 10.0.4.100
+    command: tail -f /dev/null
+
+networks:
+  net_r1_r2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.12.0.0/28
+  net_r2_r3:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.23.0.0/28
+  net_r3_r5:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.35.0.0/28
+  net_r2_r5:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.25.0.0/28
+  net_r3_r4:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.34.0.0/28
+  net_r6_r5:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.56.0.0/28
+  net_pc1_r1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+  net_pc2_r1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
+  net_pc3_r4:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.3.0/24
+  net_pc4_r6:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.4.0/24
