@@ -49,7 +49,7 @@ services:
         ipv4_address: 10.23.0.3
       net_r3_r4:
         ipv4_address: 10.34.0.4
-      net_r5_r3:
+      net_r3_r5:
         ipv4_address: 10.35.0.2
     command: ["tail -f /dev/null"]
     #volumes:
@@ -85,7 +85,7 @@ services:
         ipv4_address: 10.25.0.2
       net_r3_r5:
         ipv4_address: 10.35.0.3
-      net_r5_r6:
+      net_r6_r5:
         ipv4_address: 10.56.0.4
     command: ["tail -f /dev/null"]
     #volumes:
@@ -100,7 +100,7 @@ services:
       - NET_ADMIN
       - NET_RAW
     networks:
-      net_r5_r6:
+      net_r6_r5:
         ipv4_address: 10.56.0.2
       net_pc4_r6:
         ipv4_address: 10.0.4.4
