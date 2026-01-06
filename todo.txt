@@ -1,0 +1,9 @@
+do zrobienia:
+etap 1:
+	-topologia (ustawienie routerów i pc zgodnie z topologią, ustawienie sieci między nimi)
+	-główna konfiguracja routera (baza pod inne routery, zainstalowana quagga, narzędzie od tablic routingu, włączenie routowania pakietów)
+	-rozszczepienie konfiguracji (oddzielna konfiguracja dla każdego routera, ustawianie tablic routingu, ospf)
+etap 2:
+	-ustawianie tc na konfiguracjach routerów (po to jest rozszczepienie konfiguracji)
+etap 3: 
+	-testy
