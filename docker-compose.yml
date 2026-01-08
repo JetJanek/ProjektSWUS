@@ -16,10 +16,10 @@ services:
       net_r1_r2:
         ipv4_address: 10.12.0.2
         interface_name: eth3
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r1:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r1:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   r2:
     build: ./quagga
@@ -38,10 +38,10 @@ services:
       net_r2_r5:
         ipv4_address: 10.25.0.2
         interface_name: eth3
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r2:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r2:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   r3:
     build: ./quagga
@@ -60,10 +60,10 @@ services:
       net_r3_r4:
         ipv4_address: 10.34.0.2
         interface_name: eth3
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r3:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r3:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   r4:
     build: ./quagga
@@ -79,10 +79,10 @@ services:
       net_r3_r4:
         ipv4_address: 10.34.0.3
         interface_name: eth2
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r4:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r4:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   r5:
     build: ./quagga
@@ -101,10 +101,10 @@ services:
       net_r5_r6:
         ipv4_address: 10.56.0.2
         interface_name: eth3
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r5:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r5:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   r6:
     build: ./quagga
@@ -120,10 +120,10 @@ services:
       net_r5_r6:
         ipv4_address: 10.56.0.3
         interface_name: eth2
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/r6:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/r6:/usr/local/etc
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
   pc1:
     build: ./pc  # Zmień na swój obraz PC

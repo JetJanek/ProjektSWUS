@@ -1,5 +1,8 @@
 import json
+import os
 
+host_config_path = 'configs'
+container_config_path = '/usr/local/etc'
 edges = [('PC1', 'R1'), ('PC2', 'R1'), ('PC3', 'R4'), ('PC4', 'R6'), ('R1', 'R2'), ('R2', 'R3'), ('R2', 'R5'), ('R3', 'R5'), ('R3', 'R4'), ('R5', 'R6')]
 
 connections = {'R1': [], 'R2': [], 'R3': [], 'R4': [], 'R5': [], 'R6': [], 'PC1': [], 'PC2': [], 'PC3': [], 'PC4': [], }
@@ -40,13 +43,16 @@ class Interface:
             self.address = f'10.0.{num_b}.2'
         else:
             self.address = f'10.{c[-1]}{d[-1]}.0.{ 2 if num_a < num_b else 3 }'
-        self.mask = '24' if a.startswith('PC') else '28'
+        self.mask = '24' if a.startswith('PC') or b.startswith('PC') else '28'
 
     def __str__(self):
         return self.address
 
     def __repr__(self):
         return '"' + str(self) + '"'
+
+    def network(self):
+        return self.address[:self.address.rfind('.')] + '.0/' + self.mask
 
 
 print(connections)
@@ -58,19 +64,36 @@ print(json.dumps(json.loads(repr(networks)), indent=4))
 print(json.dumps(json.loads(repr(interfaces).replace('\'', '\"')), indent=4))
 
 
-# Generate zebra files:
-for r in 'R1', 'R2', 'R3', 'R4', 'R5', 'R6':
-    interface_list = interfaces[r]
-    with open(f'{r}/zebra.conf', 'w', encoding='UTF-8') as file:
-        file.write('''hostname zebra
-password zebra
-log file /etc/log/zebra.log
+# Generate zebra and ospf files:
+for i, r in enumerate(('r1', 'r2', 'r3', 'r4', 'r5', 'r6')):
+    i += 1
+    interface_list = interfaces[r.upper()]
+    os.makedirs(f'{host_config_path}/{r}', exist_ok=True)
+    with open(f'{host_config_path}/{r}/zebra.conf', 'w', encoding='UTF-8') as file:
+        file.write(f'''hostname zebra
+password 
+log file {container_config_path}/log/zebra.log
 ''')
         for interface in interface_list:
             file.write(f'''!
 interface {interface.name}
  ip address {interface.address + "/" + interface.mask}
 ''')
+
+    # Create empty log files
+    os.makedirs(f'{host_config_path}/{r}/log', exist_ok=True)
+    open(f'{host_config_path}/{r}/log/zebra.log', 'a').close()
+    open(f'{host_config_path}/{r}/log/ospf.log', 'a').close()
+
+    bs = '\n'
+    with open(f'{host_config_path}/{r}/ospfd.conf', 'w', encoding='UTF-8') as file:
+        file.write(f'''!
+router ospf
+ ospf router-id {i}.{i}.{i}.{i}
+{bs.join([f' network {interface.network()} area 0' for interface in interface_list])}
+!
+log file {container_config_path}/log/ospfd.log
+!''')
 
 # Generate docker-compose.yml
 with open(f'docker-compose.yml', 'w', encoding='UTF-8') as file:
@@ -92,10 +115,10 @@ with open(f'docker-compose.yml', 'w', encoding='UTF-8') as file:
         ipv4_address: {interface.address}
         interface_name: {interface.name}''')
             file.write(f'''
-    command: tail -f /dev/null
+    #command: tail -f /dev/null
     volumes:
-      - ./configs/{node_name}:/etc/quagga
-    #command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+      - ./configs/{node_name}:{container_config_path}
+    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
 
 ''')
         else:

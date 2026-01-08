@@ -1,5 +1,5 @@
 # Baza: gotowy obraz pierky/quagga
-FROM pierky/quagga
+FROM kathara/quagga
 
 # Instalujemy tylko edytor (opcjonalnie) i bash (już jest)
 # Głównie dodajemy prosty entrypoint script
