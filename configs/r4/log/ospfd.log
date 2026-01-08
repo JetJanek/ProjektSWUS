@@ -1,0 +1,13 @@
+2026/01/08 22:45:07 OSPF: OSPFd 1.2.4 starting: vty@2604
+2026/01/08 22:45:07 OSPF: MPLS-TE(initialize_linkparams) Could not find corresponding OSPF Interface for eth1
+2026/01/08 22:45:07 OSPF: OSPF MPLS-TE: Abort update TE parameters: no Link Parameters for interface
+2026/01/08 22:45:07 OSPF: interface 10.0.3.2 [3] join AllSPFRouters Multicast group.
+2026/01/08 22:45:07 OSPF: SPF: Scheduled in 0 msec
+2026/01/08 22:45:07 OSPF: MPLS-TE(initialize_linkparams) Could not find corresponding OSPF Interface for eth2
+2026/01/08 22:45:07 OSPF: OSPF MPLS-TE: Abort update TE parameters: no Link Parameters for interface
+2026/01/08 22:45:07 OSPF: interface 10.34.0.3 [2] join AllSPFRouters Multicast group.
+2026/01/08 22:45:07 OSPF: SPF: Scheduled in 50 msec
+2026/01/08 22:45:07 OSPF: MPLS-TE(initialize_linkparams) Could not find corresponding OSPF Interface for lo
+2026/01/08 22:45:07 OSPF: OSPF MPLS-TE: Abort update TE parameters: no Link Parameters for interface
+2026/01/08 22:45:08 OSPF: SPF Processing Time(usecs): External Routes: 11
+

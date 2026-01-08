@@ -2,10 +2,10 @@ import json
 import os
 
 host_config_path = 'configs'
-container_config_path = '/usr/local/etc'
+container_config_path = '/etc/quagga'
 edges = [('PC1', 'R1'), ('PC2', 'R1'), ('PC3', 'R4'), ('PC4', 'R6'), ('R1', 'R2'), ('R2', 'R3'), ('R2', 'R5'), ('R3', 'R5'), ('R3', 'R4'), ('R5', 'R6')]
 
-connections = {'R1': [], 'R2': [], 'R3': [], 'R4': [], 'R5': [], 'R6': [], 'PC1': [], 'PC2': [], 'PC3': [], 'PC4': [], }
+connections = {'R1': [], 'R2': [], 'R3': [], 'R4': [], 'R5': [], 'R6': [], 'PC1': [], 'PC2': [], 'PC3': [], 'PC4': []}
 for a, b in edges:
     connections[a].append(b)
     connections[b].append(a)
@@ -71,7 +71,7 @@ for i, r in enumerate(('r1', 'r2', 'r3', 'r4', 'r5', 'r6')):
     os.makedirs(f'{host_config_path}/{r}', exist_ok=True)
     with open(f'{host_config_path}/{r}/zebra.conf', 'w', encoding='UTF-8') as file:
         file.write(f'''hostname zebra
-password 
+password zebra
 log file {container_config_path}/log/zebra.log
 ''')
         for interface in interface_list:
@@ -115,10 +115,9 @@ with open(f'docker-compose.yml', 'w', encoding='UTF-8') as file:
         ipv4_address: {interface.address}
         interface_name: {interface.name}''')
             file.write(f'''
-    #command: tail -f /dev/null
     volumes:
       - ./configs/{node_name}:{container_config_path}
-    command: ["/bin/sh", "-c", "zebra -d && ospfd -d && tail -f /dev/null"]  # Uruchom daemony w tle
+    command: bash -c "zebra -d && ospfd -d && vtysh && tail -f /dev/null"
 
 ''')
         else:
