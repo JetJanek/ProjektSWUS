@@ -83,7 +83,7 @@ interface {interface.name}
     # Create empty log files
     os.makedirs(f'{host_config_path}/{r}/log', exist_ok=True)
     open(f'{host_config_path}/{r}/log/zebra.log', 'a').close()
-    open(f'{host_config_path}/{r}/log/ospf.log', 'a').close()
+    open(f'{host_config_path}/{r}/log/ospfd.log', 'a').close()
 
     bs = '\n'
     with open(f'{host_config_path}/{r}/ospfd.conf', 'w', encoding='UTF-8') as file:
