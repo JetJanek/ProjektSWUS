@@ -120,36 +120,48 @@ services:
     command: bash -c "zebra -d && ospfd -d && vtysh && tail -f /dev/null"
 
   pc1:
-    build: ./pc  # Zmień na swój obraz PC
+    build: ./pc
     container_name: pc1
+    cap_add:             # <--- KROK 1: Dodaj uprawnienia
+      - NET_ADMIN
     networks:
       net_pc1_r1:
         ipv4_address: 10.0.1.100
-    command: tail -f /dev/null  # Idle, instaluj co chcesz via exec
+    # KROK 2: Zmień command (usuń stary GW, dodaj nowy na R1, czekaj)
+    command: sh -c "ip route del default && ip route add default via 10.0.1.2 && tail -f /dev/null"
     
   pc2:
-    build: ./pc  # Zmień na swój obraz PC
+    build: ./pc
     container_name: pc2
+    cap_add:             # <--- KROK 1
+      - NET_ADMIN
     networks:
       net_pc2_r1:
         ipv4_address: 10.0.2.100
-    command: tail -f /dev/null  # Idle, instaluj co chcesz via exec
+    # Gateway na R1 (interfejs 10.0.2.2)
+    command: sh -c "ip route del default && ip route add default via 10.0.2.2 && tail -f /dev/null"
     
   pc3:
-    build: ./pc  # Zmień na swój obraz PC
+    build: ./pc
     container_name: pc3
+    cap_add:             # <--- KROK 1
+      - NET_ADMIN
     networks:
       net_pc3_r4:
         ipv4_address: 10.0.3.100
-    command: tail -f /dev/null  # Idle, instaluj co chcesz via exec
+    # Gateway na R4 (interfejs 10.0.3.2)
+    command: sh -c "ip route del default && ip route add default via 10.0.3.2 && tail -f /dev/null"
     
   pc4:
-    build: ./pc  # Zmień na swój obraz PC
+    build: ./pc
     container_name: pc4
+    cap_add:             # <--- KROK 1
+      - NET_ADMIN
     networks:
       net_pc4_r6:
         ipv4_address: 10.0.4.100
-    command: tail -f /dev/null  # Idle, instaluj co chcesz via exec
+    # Gateway na R6 (interfejs 10.0.4.2)
+    command: sh -c "ip route del default && ip route add default via 10.0.4.2 && tail -f /dev/null"
     
 networks:
   net_pc1_r1:
